@@ -149,3 +149,7 @@ BGInfoMac/
     ├── build_dmg.sh                   # Generates the .dmg installer (drag to Applications, custom icon)
     └── generate_icon.swift            # Generates the icon assets
 ```
+
+## License
+
+MIT — see [LICENSE](LICENSE).
