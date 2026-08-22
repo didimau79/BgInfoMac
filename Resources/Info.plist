@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleName</key>
+    <string>BGInfoMac</string>
+    <key>CFBundleDisplayName</key>
+    <string>BGInfoMac</string>
+    <key>CFBundleIdentifier</key>
+    <string>com.local.bginfomac</string>
+    <key>CFBundleVersion</key>
+    <string>4</string>
+    <key>CFBundleShortVersionString</key>
+    <string>2.0</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleExecutable</key>
+    <string>BGInfoMac</string>
+    <key>CFBundleIconFile</key>
+    <string>AppIcon</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>13.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSHumanReadableCopyright</key>
+    <string>Uso personal.</string>
+    <key>NSLocationUsageDescription</key>
+    <string>BGInfoMac usa tu ubicación únicamente para poder mostrar el nombre (SSID) de la red Wi-Fi conectada. No se guarda ni se envía a ningún lado.</string>
+    <key>NSLocationWhenInUseUsageDescription</key>
+    <string>BGInfoMac usa tu ubicación únicamente para poder mostrar el nombre (SSID) de la red Wi-Fi conectada. No se guarda ni se envía a ningún lado.</string>
+</dict>
+</plist>
