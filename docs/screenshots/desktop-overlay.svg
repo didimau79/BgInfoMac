@@ -1,0 +1,80 @@
+<svg viewBox="0 0 960 600" xmlns="http://www.w3.org/2000/svg" font-family="Helvetica, Arial, sans-serif" role="img" aria-label="BGInfoMac desktop overlay example with fictitious data">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2b2560"/>
+      <stop offset="100%" stop-color="#171335"/>
+    </linearGradient>
+    <radialGradient id="blob1" cx="15%" cy="20%" r="45%">
+      <stop offset="0%" stop-color="#ffb48c" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#ffb48c" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob2" cx="85%" cy="15%" r="50%">
+      <stop offset="0%" stop-color="#ff78aa" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#ff78aa" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob3" cx="30%" cy="85%" r="55%">
+      <stop offset="0%" stop-color="#785aff" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="#785aff" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="blob4" cx="80%" cy="90%" r="55%">
+      <stop offset="0%" stop-color="#50b4ff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#50b4ff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="960" height="600" rx="14" fill="url(#bg)"/>
+  <rect width="960" height="600" rx="14" fill="url(#blob1)"/>
+  <rect width="960" height="600" rx="14" fill="url(#blob2)"/>
+  <rect width="960" height="600" rx="14" fill="url(#blob3)"/>
+  <rect width="960" height="600" rx="14" fill="url(#blob4)"/>
+
+  <!-- menu bar -->
+  <rect x="0" y="0" width="960" height="26" fill="#14141a" fill-opacity="0.55"/>
+  <circle cx="18" cy="13" r="4" fill="#ffffff" fill-opacity="0.9"/>
+  <text x="32" y="17" font-size="11" fill="#ffffff" fill-opacity="0.9">Finder&#160;&#160;&#160;File&#160;&#160;&#160;Edit&#160;&#160;&#160;View&#160;&#160;&#160;Go&#160;&#160;&#160;Window&#160;&#160;&#160;Help</text>
+  <path d="M900 6 l3 8 h-2 l1 6 -5 -9 h2 z" fill="#ffe08a"/>
+  <path d="M922 8 a7 7 0 0 1 10 0" stroke="#ffffff" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+  <path d="M924.3 11 a4 4 0 0 1 5.4 0" stroke="#ffffff" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+  <circle cx="927" cy="15" r="1.2" fill="#ffffff"/>
+  <rect x="944" y="8" width="12" height="7" rx="1.5" fill="none" stroke="#ffffff" stroke-width="1.1"/>
+  <rect x="956" y="10.5" width="1.6" height="2" fill="#ffffff"/>
+  <rect x="945" y="9" width="8.5" height="5" rx="0.8" fill="#ffffff"/>
+  <text x="808" y="17" font-size="11" fill="#ffffff" text-anchor="end">Mon 22 Aug 14:32</text>
+
+  <!-- overlay panel, bottom-right -->
+  <g>
+    <rect x="772" y="406" width="172" height="132" rx="7" fill="#241f3a" fill-opacity="0.62"/>
+    <text x="780" y="420" font-size="7.5" font-weight="700" letter-spacing="0.5" fill="#9dc0ff">SISTEMA</text>
+    <text x="780" y="433" font-size="8.5" fill="#a7a4c4">Equipo</text>
+    <text x="828" y="433" font-size="8.5" fill="#e4e2f5">MacBook de Juan</text>
+    <text x="780" y="446" font-size="8.5" fill="#a7a4c4">SO</text>
+    <text x="828" y="446" font-size="8.5" fill="#e4e2f5">macOS Sonoma 14.5</text>
+
+    <text x="780" y="463" font-size="7.5" font-weight="700" letter-spacing="0.5" fill="#9dc0ff">HARDWARE</text>
+    <text x="780" y="479" font-size="8.5" fill="#a7a4c4">RAM</text>
+    <rect x="828" y="473" width="100" height="5" rx="2.5" fill="#ffffff" fill-opacity="0.15"/>
+    <rect x="828" y="473" width="45" height="5" rx="2.5" fill="#5b93ff"/>
+    <text x="780" y="493" font-size="8.5" fill="#a7a4c4">Batería</text>
+    <rect x="828" y="487" width="100" height="5" rx="2.5" fill="#ffffff" fill-opacity="0.15"/>
+    <rect x="828" y="487" width="82" height="5" rx="2.5" fill="#5b93ff"/>
+
+    <text x="780" y="510" font-size="7.5" font-weight="700" letter-spacing="0.5" fill="#9dc0ff">RED</text>
+    <text x="780" y="523" font-size="8.5" fill="#a7a4c4">Wi-Fi</text>
+    <text x="828" y="523" font-size="8.5" fill="#e4e2f5">Cafe-Wifi-5G</text>
+    <text x="780" y="536" font-size="8.5" fill="#a7a4c4">IP Pública</text>
+    <text x="828" y="536" font-size="8.5" fill="#e4e2f5">203.0.113.42</text>
+  </g>
+
+  <!-- dock -->
+  <g>
+    <rect x="325" y="544" width="310" height="48" rx="16" fill="#ffffff" fill-opacity="0.18" stroke="#ffffff" stroke-opacity="0.25"/>
+    <rect x="333" y="550" width="34" height="34" rx="9" fill="#4a9eff"/>
+    <rect x="375" y="550" width="34" height="34" rx="9" fill="#3ddc84"/>
+    <rect x="417" y="550" width="34" height="34" rx="9" fill="#ff6b6b"/>
+    <rect x="459" y="550" width="34" height="34" rx="9" fill="#a066ff"/>
+    <rect x="501" y="550" width="34" height="34" rx="9" fill="#ffb648"/>
+    <rect x="543" y="550" width="34" height="34" rx="9" fill="#6b7280"/>
+    <rect x="585" y="553" width="1" height="30" fill="#ffffff" fill-opacity="0.3"/>
+    <rect x="593" y="550" width="34" height="34" rx="9" fill="#9aa0ac"/>
+  </g>
+</svg>

@@ -4,6 +4,13 @@ A native macOS alternative to the classic Windows **BGInfo**: it shows system in
 
 Current version: **2.0** (build 4).
 
+<p align="center">
+  <img src="docs/screenshots/desktop-overlay.svg" width="49%" alt="Desktop overlay example, with fictitious data">
+  <img src="docs/screenshots/menu-popover.svg" width="49%" alt="Menu bar popover example, with fictitious data">
+</p>
+
+<p align="center"><sub>All data shown above is fictitious, for illustration only.</sub></p>
+
 ## What it shows
 
 - **System**: computer name, user, macOS version with marketing name (e.g. "macOS Tahoe 26.6.2"), serial number, OS build, date/time.
