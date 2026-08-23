@@ -2,7 +2,7 @@
 
 A native macOS alternative to the classic Windows **BGInfo**: it shows system information directly on the desktop background (behind the icons) and in a menu bar popover, both fully and independently configurable.
 
-Current version: **2.1** (build 5).
+Current version: **2.1.1** (build 6).
 
 <p align="center">
   <img src="docs/screenshots/desktop-overlay.svg" width="49%" alt="Desktop overlay example, with fictitious data">

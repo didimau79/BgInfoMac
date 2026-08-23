@@ -503,9 +503,14 @@ final class SystemInfoProvider {
             completion(nil)
             return
         }
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
         request.timeoutInterval = 5
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        // Sesión efímera y descartable: `URLSession.shared` reutiliza conexiones
+        // keep-alive entre llamadas, así que justo después de conectar/desconectar
+        // una VPN podía reusar una conexión abierta por la interfaz anterior y
+        // devolver la IP pública vieja en vez de volver a resolverla.
+        let session = URLSession(configuration: .ephemeral)
+        let task = session.dataTask(with: request) { data, _, error in
             guard error == nil, let data = data, let ip = String(data: data, encoding: .utf8), !ip.isEmpty else {
                 completion(nil)
                 return
@@ -525,9 +530,10 @@ final class SystemInfoProvider {
             completion(nil, nil, nil)
             return
         }
-        var request = URLRequest(url: url)
+        var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
         request.timeoutInterval = 5
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+        let session = URLSession(configuration: .ephemeral)
+        let task = session.dataTask(with: request) { data, _, error in
             guard error == nil, let data = data,
                   let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
                   (json["success"] as? Bool) != false,

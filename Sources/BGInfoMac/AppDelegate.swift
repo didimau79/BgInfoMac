@@ -63,9 +63,26 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
     /// terminar refrescando una sola vez.
     private func handleNetworkChange() {
         networkChangeDebounce?.cancel()
-        let workItem = DispatchWorkItem { [weak self] in self?.refresh() }
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.refresh()
+            // Al conectar/desconectar una VPN, NWPathMonitor a veces avisa antes
+            // de que el sistema termine de instalar la ruta por defecto sobre el
+            // túnel: la primera consulta de IP pública puede salir todavía por la
+            // interfaz anterior. Se reintenta un par de veces más para agarrar la
+            // IP correcta sin esperar al próximo refresh periódico.
+            self?.scheduleFollowUpPublicIPRefresh(attempt: 1)
+        }
         networkChangeDebounce = workItem
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.75, execute: workItem)
+    }
+
+    private func scheduleFollowUpPublicIPRefresh(attempt: Int) {
+        guard attempt <= 2 else { return }
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) { [weak self] in
+            guard let self = self else { return }
+            self.refresh()
+            self.scheduleFollowUpPublicIPRefresh(attempt: attempt + 1)
+        }
     }
 
     /// Conectar/desconectar un disco (externo o de red) dispara didMount/didUnmount;
