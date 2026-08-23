@@ -2,7 +2,7 @@
 
 A native macOS alternative to the classic Windows **BGInfo**: it shows system information directly on the desktop background (behind the icons) and in a menu bar popover, both fully and independently configurable.
 
-Current version: **2.0** (build 4).
+Current version: **2.1** (build 5).
 
 <p align="center">
   <img src="docs/screenshots/desktop-overlay.svg" width="49%" alt="Desktop overlay example, with fictitious data">
@@ -16,11 +16,11 @@ Current version: **2.0** (build 4).
 - **System**: computer name, user, macOS version with marketing name (e.g. "macOS Tahoe 26.6.2"), serial number, OS build, date/time.
 - **Hardware**: Mac model, chip, uptime, RAM usage, battery, CPU cores, GPU.
   - RAM and storage bars turn **orange at 80% used and red at 90%** (standard monitoring thresholds).
-  - Battery is shown as a bar too, colored by charge level (**blue 100–50%, orange 49–15%, red below 15%**), with a small lightning bolt that animates in with a soft pulse while charging — health and cycle count show up in the tooltip.
+  - Battery is shown as a bar too, colored by charge level (**blue 100–50%, orange 49–15%, red below 15%**), with a small lightning bolt that animates in with a soft pulse while charging — time remaining (or time until full while charging), health and cycle count show up in the tooltip.
   - CPU cores show the performance/efficiency split on Apple Silicon.
   - GPU shows model and core count when it can be determined.
 - **Storage**: every mounted volume, with a usage bar; hovering shows used/free space and the disk format (APFS, NTFS, exFAT, etc.). External and network volumes can be included or excluded from Preferences.
-- **Network**: Wi-Fi SSID, all local interfaces with their IP, public IP (with country and flag when it can be determined), and Internet provider (ISP). If a VPN is connected, its data (provider, tunnel IP, public IP, gateway, DNS) is grouped separately below a divider, since it replaces the local network's data while active. If there's no active network connection at all, the section says so instead of showing empty fields.
+- **Network**: Wi-Fi SSID, all local interfaces with their IP, public IP (with country and flag when it can be determined), and Internet provider (ISP). If a VPN is connected, its data (provider, tunnel IP, public IP, gateway, DNS) is grouped separately below a divider, since it replaces the local network's data while active. If there's no active network connection at all, the section says so instead of showing empty fields. The menu popover also includes a **"Test speed"** button that measures download/upload throughput on demand.
 - **Message**: free text you define yourself (hidden by default).
 
 Everything refreshes automatically according to the configured interval (**5 seconds by default**). Both the sections and the fields within each section can be reordered by dragging their handle, shown/hidden individually, and each section can hide its own title independently — all from **Preferences**, and separately for the desktop overlay and the menu popover.
@@ -89,7 +89,7 @@ The window is **resizable** and has two tabs:
   - Its fields, also individually reorderable by dragging their own handle, each with its own visibility toggle.
   - For Desktop, this tab also includes the "Show On" display selector (see Multiple displays below).
   - The **Message** section includes a text box to write a custom message that appears as one more section (reorderable alongside the others).
-- **Appearance**: overlay corner and horizontal/vertical margins (0–400pt), text color, background color, background opacity, font size, **Launch at Login**, app language, and app appearance (System/Light/Dark). Everything applies live to the overlay.
+- **Appearance**: overlay corner and horizontal/vertical margins (0–400pt), text color, background color, background opacity, font size, **Launch at Login**, app language, and app appearance (System/Light/Dark). Everything applies live to the overlay. This tab also has **Export/Import Settings** buttons to save your whole configuration to a JSON file and load it back (e.g. when moving to another Mac).
 
 Preferences are stored in `UserDefaults` and persist across restarts.
 

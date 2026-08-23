@@ -25,6 +25,13 @@ private extension View {
     }
 }
 
+private enum SpeedTestState: Equatable {
+    case idle
+    case running
+    case done(down: Double, up: Double)
+    case failed
+}
+
 struct MenuPopoverView: View {
     let snapshot: SystemSnapshot
     let prefs: Preferences
@@ -35,6 +42,7 @@ struct MenuPopoverView: View {
 
     @State private var donationPromptDismissedThisSession = false
     @State private var batteryPulseAnimating = false
+    @State private var speedTestState: SpeedTestState = .idle
 
     private var lang: AppLanguage { prefs.appLanguage }
 
@@ -147,16 +155,22 @@ struct MenuPopoverView: View {
             section.fields.first(where: { $0.id == kind })?.isVisible ?? true
         }
         let vpnConnected = snapshot.vpnProvider != nil && isFieldVisible(.vpnProvider)
-        let vpnGroupedKinds: Set<FieldKind> = [.vpnProvider, .publicIP, .ispProvider, .gateway, .dnsServers]
+        let localKinds: Set<FieldKind> = [.wifiSSID, .interfaces]
+        let internetKinds: Set<FieldKind> = [.publicIP, .ispProvider, .gateway, .dnsServers]
+        let localFields = section.fields.filter { $0.isVisible && localKinds.contains($0.id) }
 
-        ForEach(section.fields.filter { $0.isVisible && !(vpnConnected && vpnGroupedKinds.contains($0.id)) }) { field in
+        ForEach(localFields) { field in
             fieldRow(field.id)
         }
 
-        if vpnConnected {
+        // Separa lo "local" (Wi-Fi, interfaces) de lo que depende de la
+        // conexión a Internet (IP pública, gateway, DNS, VPN si hay).
+        if !localFields.isEmpty {
             Divider()
                 .padding(.vertical, 2)
+        }
 
+        if vpnConnected {
             if isFieldVisible(.ispProvider) { fieldRow(.ispProvider) }
             fieldRow(.vpnProvider)
             if let tunnelIP = snapshot.vpnTunnelIP {
@@ -165,6 +179,64 @@ struct MenuPopoverView: View {
             if isFieldVisible(.publicIP) { fieldRow(.publicIP) }
             if isFieldVisible(.gateway) { fieldRow(.gateway) }
             if isFieldVisible(.dnsServers) { fieldRow(.dnsServers) }
+        } else {
+            ForEach(section.fields.filter { $0.isVisible && internetKinds.contains($0.id) }) { field in
+                fieldRow(field.id)
+            }
+        }
+
+        speedTestRow
+    }
+
+    /// Sin API nativa para esto — mide bajada/subida bajo demanda contra un
+    /// endpoint público. El mismo botón sirve para repetir la medición.
+    private var speedTestRow: some View {
+        HStack(spacing: 8) {
+            Button(L(.speedTestButtonLabel, lang)) {
+                runSpeedTestIfNeeded()
+            }
+            .font(.system(size: 10.5))
+            .controlSize(.mini)
+            .disabled(speedTestState == .running)
+
+            speedTestResultText
+
+            Spacer(minLength: 0)
+        }
+        .padding(.top, 2)
+    }
+
+    @ViewBuilder
+    private var speedTestResultText: some View {
+        switch speedTestState {
+        case .idle:
+            EmptyView()
+        case .running:
+            Text(L(.speedTestRunningLabel, lang))
+                .font(.system(size: 11))
+                .foregroundColor(.secondary)
+        case .done(let down, let up):
+            Text(String(format: L(.speedTestResultFormat, lang), down, up))
+                .font(.system(size: 11))
+                .foregroundColor(.green)
+        case .failed:
+            Text(L(.speedTestFailedLabel, lang))
+                .font(.system(size: 11))
+                .foregroundColor(.secondary)
+        }
+    }
+
+    private func runSpeedTestIfNeeded() {
+        guard speedTestState != .running else { return }
+        speedTestState = .running
+        info.runSpeedTest { down, up in
+            DispatchQueue.main.async {
+                if let down = down, let up = up {
+                    speedTestState = .done(down: down, up: up)
+                } else {
+                    speedTestState = .failed
+                }
+            }
         }
     }
 
@@ -351,7 +423,7 @@ struct MenuPopoverView: View {
         let fraction = Double(percentage) / 100
         let color: Color = percentage >= 50 ? .accentColor : (percentage >= 15 ? .orange : .red)
         let isCharging = snapshot.batteryIsCharging
-        let tooltip = HardwareDisplay.batteryText(percentage: snapshot.batteryPercentage, isCharging: isCharging, healthPercent: snapshot.batteryHealthPercent, cycleCount: snapshot.batteryCycleCount, lang: lang) ?? ""
+        let tooltip = HardwareDisplay.batteryText(percentage: snapshot.batteryPercentage, isCharging: isCharging, healthPercent: snapshot.batteryHealthPercent, cycleCount: snapshot.batteryCycleCount, timeRemainingMinutes: snapshot.batteryTimeRemainingMinutes, lang: lang) ?? ""
 
         return HStack(spacing: 8) {
             Text(fieldLabel(.battery, lang))

@@ -58,6 +58,25 @@ enum AppearanceMode: String, CaseIterable, Codable {
     }
 }
 
+struct ExportedSettings: Codable {
+    var layout: LayoutConfig
+    var customMessageText: String
+    var menuLayout: LayoutConfig
+    var menuCustomMessageText: String
+    var overlayVisible: Bool
+    var corner: ScreenCorner
+    var marginX: Double
+    var marginY: Double
+    var refreshIntervalRawValue: TimeInterval
+    var fontSize: Double
+    var textColorHex: String
+    var backgroundColorHex: String
+    var backgroundOpacity: Double
+    var appLanguage: AppLanguage
+    var appearanceMode: AppearanceMode
+    var displayTarget: String
+}
+
 final class Preferences {
     static let shared = Preferences()
 
@@ -257,6 +276,57 @@ final class Preferences {
         // flag de "desactivado" que usa el botón ✕/⌘⇧D.
         donationPromptDisabled = true
         return true
+    }
+
+    func exportSettings() -> ExportedSettings {
+        ExportedSettings(
+            layout: layout,
+            customMessageText: customMessageText,
+            menuLayout: menuLayout,
+            menuCustomMessageText: menuCustomMessageText,
+            overlayVisible: overlayVisible,
+            corner: corner,
+            marginX: marginX,
+            marginY: marginY,
+            refreshIntervalRawValue: refreshInterval.rawValue,
+            fontSize: fontSize,
+            textColorHex: textColorHex,
+            backgroundColorHex: backgroundColorHex,
+            backgroundOpacity: backgroundOpacity,
+            appLanguage: appLanguage,
+            appearanceMode: appearanceMode,
+            displayTarget: displayTarget
+        )
+    }
+
+    func importSettings(_ settings: ExportedSettings) {
+        layout = settings.layout
+        customMessageText = settings.customMessageText
+        menuLayout = settings.menuLayout
+        menuCustomMessageText = settings.menuCustomMessageText
+        overlayVisible = settings.overlayVisible
+        corner = settings.corner
+        marginX = settings.marginX
+        marginY = settings.marginY
+        refreshInterval = RefreshInterval(rawValue: settings.refreshIntervalRawValue) ?? .fiveSeconds
+        fontSize = settings.fontSize
+        textColorHex = settings.textColorHex
+        backgroundColorHex = settings.backgroundColorHex
+        backgroundOpacity = settings.backgroundOpacity
+        appLanguage = settings.appLanguage
+        appearanceMode = settings.appearanceMode
+        displayTarget = settings.displayTarget
+    }
+
+    func exportSettingsData() throws -> Data {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = [.prettyPrinted, .sortedKeys]
+        return try encoder.encode(exportSettings())
+    }
+
+    func importSettingsData(_ data: Data) throws {
+        let decoded = try JSONDecoder().decode(ExportedSettings.self, from: data)
+        importSettings(decoded)
     }
 
     static let didChangeNotification = Notification.Name("PreferencesDidChange")

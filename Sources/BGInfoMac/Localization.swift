@@ -37,6 +37,7 @@ enum LKey: String {
     case fieldVPNProvider, fieldVPNTunnelIP, fieldISPProvider
 
     case coresUnit, batteryHealthLabel, batteryCyclesLabel
+    case batteryTimeRemainingLabel, batteryTimeToFullLabel
 
     /// Formato con un "%d": cantidad de servidores DNS adicionales no mostrados.
     case dnsMoreSuffix
@@ -55,6 +56,10 @@ enum LKey: String {
     case donationPromptText, donationPromptDisableHint
 
     case launchAtLogin
+    case exportSettingsButton, importSettingsButton
+    case exportSettingsSuccessTitle, exportSettingsSuccessMessage
+    case importSettingsSuccessTitle, importSettingsSuccessMessage
+    case importSettingsErrorTitle, importSettingsErrorMessage
     case displayTargetLabel, allDisplaysOption
 
     case targetDesktop, targetMenuBar
@@ -66,6 +71,10 @@ enum LKey: String {
     case wifiPermissionWarningShort, wifiPermissionPrefsMessage, openSystemSettingsButton
 
     case noNetworkConnection
+
+    case speedTestButtonLabel, speedTestRunningLabel, speedTestFailedLabel
+    /// Formato con dos "%.0f": Mbps de bajada y de subida.
+    case speedTestResultFormat
 
     /// Formato con dos "%@": espacio usado y espacio libre.
     case storageUsedFreeTooltip
@@ -125,6 +134,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .coresUnit: "cores",
         .batteryHealthLabel: "health",
         .batteryCyclesLabel: "cycles",
+        .batteryTimeRemainingLabel: "remaining",
+        .batteryTimeToFullLabel: "until full",
 
         .showTitleToggle: "Show Title",
         .storageHint: "All mounted volumes are shown automatically.",
@@ -158,6 +169,14 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .versionLabel: "Version",
 
         .launchAtLogin: "Launch at Login",
+        .exportSettingsButton: "Export Settings...",
+        .importSettingsButton: "Import Settings...",
+        .exportSettingsSuccessTitle: "Settings Exported",
+        .exportSettingsSuccessMessage: "Your settings were saved successfully.",
+        .importSettingsSuccessTitle: "Settings Imported",
+        .importSettingsSuccessMessage: "Your settings were applied successfully.",
+        .importSettingsErrorTitle: "Import Failed",
+        .importSettingsErrorMessage: "The selected file isn't a valid BGInfoMac settings file.",
         .displayTargetLabel: "Show On",
         .allDisplaysOption: "All Displays",
 
@@ -174,6 +193,10 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "To show the Wi-Fi network name, BGInfoMac needs Location permission. Enable it in System Settings → Privacy & Security → Location Services.",
         .openSystemSettingsButton: "Open System Settings",
         .noNetworkConnection: "Not connected to any network",
+        .speedTestButtonLabel: "Test speed",
+        .speedTestRunningLabel: "Measuring…",
+        .speedTestFailedLabel: "Couldn't measure",
+        .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ used / %@ free",
         .dnsMoreSuffix: "+%d more"
@@ -231,6 +254,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .coresUnit: "núcleos",
         .batteryHealthLabel: "salud",
         .batteryCyclesLabel: "ciclos",
+        .batteryTimeRemainingLabel: "restante",
+        .batteryTimeToFullLabel: "hasta carga completa",
 
         .showTitleToggle: "Mostrar título",
         .storageHint: "Se muestran automáticamente todos los volúmenes montados.",
@@ -264,6 +289,14 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .versionLabel: "Versión",
 
         .launchAtLogin: "Ejecutar al inicio",
+        .exportSettingsButton: "Exportar configuración...",
+        .importSettingsButton: "Importar configuración...",
+        .exportSettingsSuccessTitle: "Configuración exportada",
+        .exportSettingsSuccessMessage: "La configuración se guardó correctamente.",
+        .importSettingsSuccessTitle: "Configuración importada",
+        .importSettingsSuccessMessage: "La configuración se aplicó correctamente.",
+        .importSettingsErrorTitle: "Error al importar",
+        .importSettingsErrorMessage: "El archivo seleccionado no es un archivo de configuración válido de BGInfoMac.",
         .displayTargetLabel: "Mostrar en",
         .allDisplaysOption: "Todas las pantallas",
 
@@ -280,6 +313,10 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Para mostrar el nombre de la red Wi-Fi, BGInfoMac necesita permiso de Localización. Activalo en Ajustes del Sistema → Privacidad y Seguridad → Localización.",
         .openSystemSettingsButton: "Abrir Ajustes del Sistema",
         .noNetworkConnection: "Sin conexión a la red",
+        .speedTestButtonLabel: "Probar velocidad",
+        .speedTestRunningLabel: "Midiendo…",
+        .speedTestFailedLabel: "No se pudo medir",
+        .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ usados / %@ libres",
         .dnsMoreSuffix: "+%d más"
@@ -337,6 +374,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .coresUnit: "core",
         .batteryHealthLabel: "salute",
         .batteryCyclesLabel: "cicli",
+        .batteryTimeRemainingLabel: "rimanenti",
+        .batteryTimeToFullLabel: "alla carica completa",
 
         .showTitleToggle: "Mostra titolo",
         .storageHint: "Tutti i volumi montati vengono mostrati automaticamente.",
@@ -370,6 +409,14 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .versionLabel: "Versione",
 
         .launchAtLogin: "Avvia all'accesso",
+        .exportSettingsButton: "Esporta impostazioni...",
+        .importSettingsButton: "Importa impostazioni...",
+        .exportSettingsSuccessTitle: "Impostazioni esportate",
+        .exportSettingsSuccessMessage: "Le impostazioni sono state salvate correttamente.",
+        .importSettingsSuccessTitle: "Impostazioni importate",
+        .importSettingsSuccessMessage: "Le impostazioni sono state applicate correttamente.",
+        .importSettingsErrorTitle: "Importazione non riuscita",
+        .importSettingsErrorMessage: "Il file selezionato non è un file di configurazione BGInfoMac valido.",
         .displayTargetLabel: "Mostra su",
         .allDisplaysOption: "Tutti i display",
 
@@ -386,6 +433,10 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Per mostrare il nome della rete Wi-Fi, BGInfoMac ha bisogno del permesso di Localizzazione. Attivalo in Impostazioni di Sistema → Privacy e Sicurezza → Localizzazione.",
         .openSystemSettingsButton: "Apri Impostazioni di Sistema",
         .noNetworkConnection: "Nessuna connessione di rete",
+        .speedTestButtonLabel: "Prova velocità",
+        .speedTestRunningLabel: "Misurazione…",
+        .speedTestFailedLabel: "Misurazione non riuscita",
+        .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ utilizzati / %@ liberi",
         .dnsMoreSuffix: "+%d altri"
@@ -443,6 +494,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .coresUnit: "Kerne",
         .batteryHealthLabel: "Zustand",
         .batteryCyclesLabel: "Zyklen",
+        .batteryTimeRemainingLabel: "verbleibend",
+        .batteryTimeToFullLabel: "bis vollständig geladen",
 
         .showTitleToggle: "Titel anzeigen",
         .storageHint: "Alle eingebundenen Volumes werden automatisch angezeigt.",
@@ -476,6 +529,14 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .versionLabel: "Version",
 
         .launchAtLogin: "Bei Anmeldung starten",
+        .exportSettingsButton: "Einstellungen exportieren...",
+        .importSettingsButton: "Einstellungen importieren...",
+        .exportSettingsSuccessTitle: "Einstellungen exportiert",
+        .exportSettingsSuccessMessage: "Die Einstellungen wurden erfolgreich gespeichert.",
+        .importSettingsSuccessTitle: "Einstellungen importiert",
+        .importSettingsSuccessMessage: "Die Einstellungen wurden erfolgreich angewendet.",
+        .importSettingsErrorTitle: "Import fehlgeschlagen",
+        .importSettingsErrorMessage: "Die ausgewählte Datei ist keine gültige BGInfoMac-Konfigurationsdatei.",
         .displayTargetLabel: "Anzeigen auf",
         .allDisplaysOption: "Alle Bildschirme",
 
@@ -492,6 +553,10 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Um den Namen des Wi-Fi-Netzwerks anzuzeigen, benötigt BGInfoMac die Berechtigung für den Standort. Aktiviere sie in den Systemeinstellungen → Datenschutz & Sicherheit → Ortungsdienste.",
         .openSystemSettingsButton: "Systemeinstellungen öffnen",
         .noNetworkConnection: "Keine Netzwerkverbindung",
+        .speedTestButtonLabel: "Geschwindigkeit testen",
+        .speedTestRunningLabel: "Wird gemessen…",
+        .speedTestFailedLabel: "Messung fehlgeschlagen",
+        .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ belegt / %@ frei",
         .dnsMoreSuffix: "+%d weitere"
@@ -549,6 +614,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .coresUnit: "cœurs",
         .batteryHealthLabel: "santé",
         .batteryCyclesLabel: "cycles",
+        .batteryTimeRemainingLabel: "restant",
+        .batteryTimeToFullLabel: "jusqu'à charge complète",
 
         .showTitleToggle: "Afficher le titre",
         .storageHint: "Tous les volumes montés s'affichent automatiquement.",
@@ -582,6 +649,14 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .versionLabel: "Version",
 
         .launchAtLogin: "Lancer à la connexion",
+        .exportSettingsButton: "Exporter les réglages...",
+        .importSettingsButton: "Importer les réglages...",
+        .exportSettingsSuccessTitle: "Réglages exportés",
+        .exportSettingsSuccessMessage: "Les réglages ont été enregistrés avec succès.",
+        .importSettingsSuccessTitle: "Réglages importés",
+        .importSettingsSuccessMessage: "Les réglages ont été appliqués avec succès.",
+        .importSettingsErrorTitle: "Échec de l'importation",
+        .importSettingsErrorMessage: "Le fichier sélectionné n'est pas un fichier de configuration BGInfoMac valide.",
         .displayTargetLabel: "Afficher sur",
         .allDisplaysOption: "Tous les écrans",
 
@@ -598,6 +673,10 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Pour afficher le nom du réseau Wi-Fi, BGInfoMac a besoin de l'autorisation de localisation. Activez-la dans Réglages Système → Confidentialité et sécurité → Service de localisation.",
         .openSystemSettingsButton: "Ouvrir Réglages Système",
         .noNetworkConnection: "Aucune connexion réseau",
+        .speedTestButtonLabel: "Tester la vitesse",
+        .speedTestRunningLabel: "Mesure en cours…",
+        .speedTestFailedLabel: "Échec de la mesure",
+        .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ utilisés / %@ libres",
         .dnsMoreSuffix: "+%d autres"

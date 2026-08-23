@@ -58,6 +58,7 @@ struct SystemSnapshot {
     var batteryIsCharging: Bool = false
     var batteryHealthPercent: Int?
     var batteryCycleCount: Int?
+    var batteryTimeRemainingMinutes: Int?
 
     var cpuPerformanceCores: Int?
     var cpuEfficiencyCores: Int?
@@ -171,6 +172,7 @@ final class SystemInfoProvider {
         var batteryIsCharging = false
         var batteryHealthPercent: Int?
         var batteryCycleCount: Int?
+        var batteryTimeRemainingMinutes: Int?
 
         var cpuPerformanceCores: Int?
         var cpuEfficiencyCores: Int?
@@ -198,6 +200,7 @@ final class SystemInfoProvider {
         result.batteryIsCharging = battery?.isCharging ?? false
         result.batteryHealthPercent = battery?.healthPercent
         result.batteryCycleCount = battery?.cycleCount
+        result.batteryTimeRemainingMinutes = battery?.timeRemainingMinutes
 
         result.cpuPerformanceCores = sysctlInt32("hw.perflevel0.physicalcpu").map(Int.init)
         result.cpuEfficiencyCores = sysctlInt32("hw.perflevel1.physicalcpu").map(Int.init)
@@ -214,6 +217,7 @@ final class SystemInfoProvider {
         let isCharging: Bool
         let healthPercent: Int?
         let cycleCount: Int?
+        let timeRemainingMinutes: Int?
     }
 
     /// Mac de escritorio sin batería → devuelve nil, y el campo simplemente
@@ -230,8 +234,15 @@ final class SystemInfoProvider {
         let percentage = Int((Double(current) / Double(max) * 100).rounded())
         let isCharging = (description[kIOPSIsChargingKey] as? Bool) ?? false
 
+        // macOS devuelve -1 mientras todavía está calculando la estimación
+        // (recién conectado/desconectado el cargador) — en ese caso no
+        // mostramos nada, en vez de un número sin sentido.
+        let timeKey = isCharging ? kIOPSTimeToFullChargeKey : kIOPSTimeToEmptyKey
+        let rawMinutes = description[timeKey] as? Int
+        let timeRemainingMinutes = (rawMinutes ?? -1) >= 0 ? rawMinutes : nil
+
         let (cycleCount, healthPercent) = batteryRegistryInfo()
-        return BatteryInfo(percentage: percentage, isCharging: isCharging, healthPercent: healthPercent, cycleCount: cycleCount)
+        return BatteryInfo(percentage: percentage, isCharging: isCharging, healthPercent: healthPercent, cycleCount: cycleCount, timeRemainingMinutes: timeRemainingMinutes)
     }
 
     /// El "salud"/ciclos no vienen en IOPowerSources; hay que leerlos del
@@ -424,6 +435,67 @@ final class SystemInfoProvider {
             }
         }
         return nil
+    }
+
+    /// Mide velocidad de bajada y subida contra el mismo endpoint público
+    /// que usa speed.cloudflare.com — no hay API nativa de macOS para esto.
+    /// Es una sola conexión (no multi-hilo como un speedtest "real"),
+    /// pensada como estimación rápida bajo demanda, no una medición
+    /// exhaustiva; por eso no se repite sola con el refresco automático.
+    func runSpeedTest(completion: @escaping (_ downloadMbps: Double?, _ uploadMbps: Double?) -> Void) {
+        measureDownloadSpeed { downloadMbps in
+            self.measureUploadSpeed { uploadMbps in
+                completion(downloadMbps, uploadMbps)
+            }
+        }
+    }
+
+    private func measureDownloadSpeed(completion: @escaping (Double?) -> Void) {
+        guard let url = URL(string: "https://speed.cloudflare.com/__down?bytes=10000000") else {
+            completion(nil)
+            return
+        }
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 20
+        let start = Date()
+        let task = URLSession.shared.dataTask(with: request) { data, _, error in
+            guard error == nil, let data = data, !data.isEmpty else {
+                completion(nil)
+                return
+            }
+            let elapsed = Date().timeIntervalSince(start)
+            guard elapsed > 0 else {
+                completion(nil)
+                return
+            }
+            completion(Double(data.count) * 8 / elapsed / 1_000_000)
+        }
+        task.resume()
+    }
+
+    private func measureUploadSpeed(completion: @escaping (Double?) -> Void) {
+        guard let url = URL(string: "https://speed.cloudflare.com/__up") else {
+            completion(nil)
+            return
+        }
+        let payload = Data(count: 3_000_000)
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.timeoutInterval = 20
+        let start = Date()
+        let task = URLSession.shared.uploadTask(with: request, from: payload) { _, response, error in
+            guard error == nil, (response as? HTTPURLResponse)?.statusCode == 200 else {
+                completion(nil)
+                return
+            }
+            let elapsed = Date().timeIntervalSince(start)
+            guard elapsed > 0 else {
+                completion(nil)
+                return
+            }
+            completion(Double(payload.count) * 8 / elapsed / 1_000_000)
+        }
+        task.resume()
     }
 
     func fetchPublicIP(completion: @escaping (String?) -> Void) {

@@ -1,5 +1,6 @@
 import AppKit
 import SwiftUI
+import UniformTypeIdentifiers
 
 func sectionLabel(_ id: SectionKind, _ lang: AppLanguage) -> String {
     switch id {
@@ -276,7 +277,52 @@ struct PreferencesView: View {
                 Text("\(L(.marginVertical, vm.language)): \(Int(vm.marginY)) pt")
                 Slider(value: $vm.marginY, in: 0...400)
             }
+
+            Divider()
+
+            HStack {
+                Button(L(.exportSettingsButton, vm.language)) { exportSettings() }
+                Button(L(.importSettingsButton, vm.language)) { importSettings() }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func exportSettings() {
+        guard let data = try? Preferences.shared.exportSettingsData() else { return }
+
+        let panel = NSSavePanel()
+        panel.allowedContentTypes = [.json]
+        panel.nameFieldStringValue = "BGInfoMac-Settings.json"
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+
+        do {
+            try data.write(to: url, options: .atomic)
+            showAlert(title: L(.exportSettingsSuccessTitle, vm.language), message: L(.exportSettingsSuccessMessage, vm.language))
+        } catch {
+            NSLog("BGInfoMac: no se pudo exportar la configuración: \(error)")
+        }
+    }
+
+    private func importSettings() {
+        let panel = NSOpenPanel()
+        panel.allowedContentTypes = [.json]
+        panel.allowsMultipleSelection = false
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+
+        do {
+            let data = try Data(contentsOf: url)
+            try Preferences.shared.importSettingsData(data)
+            showAlert(title: L(.importSettingsSuccessTitle, vm.language), message: L(.importSettingsSuccessMessage, vm.language))
+        } catch {
+            showAlert(title: L(.importSettingsErrorTitle, vm.language), message: L(.importSettingsErrorMessage, vm.language))
+        }
+    }
+
+    private func showAlert(title: String, message: String) {
+        let alert = NSAlert()
+        alert.messageText = title
+        alert.informativeText = message
+        alert.runModal()
     }
 }

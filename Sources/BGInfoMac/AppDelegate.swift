@@ -138,6 +138,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate {
         snapshot.batteryIsCharging = hardware.batteryIsCharging
         snapshot.batteryHealthPercent = hardware.batteryHealthPercent
         snapshot.batteryCycleCount = hardware.batteryCycleCount
+        snapshot.batteryTimeRemainingMinutes = hardware.batteryTimeRemainingMinutes
         snapshot.cpuPerformanceCores = hardware.cpuPerformanceCores
         snapshot.cpuEfficiencyCores = hardware.cpuEfficiencyCores
         snapshot.cpuTotalCores = hardware.cpuTotalCores
