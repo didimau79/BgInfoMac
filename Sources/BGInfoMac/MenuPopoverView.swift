@@ -40,6 +40,12 @@ struct MenuPopoverView: View {
 
     private static let donateURL = URL(string: "https://www.paypal.com/donate?business=YCFM5VYWEFVMY&no_recurring=0&currency_code=USD")!
 
+    /// Ancho fijo (no mínimo) de la columna de etiquetas, para que los
+    /// valores de todos los renglones —incluido el resultado del test de
+    /// velocidad— arranquen siempre en la misma posición, sin importar el
+    /// largo de cada etiqueta en el idioma activo (ej. "Número de Serie").
+    private static let fieldLabelWidth: CGFloat = 100
+
     @State private var donationPromptDismissedThisSession = false
     @State private var batteryPulseAnimating = false
     @State private var speedTestState: SpeedTestState = .idle
@@ -189,15 +195,24 @@ struct MenuPopoverView: View {
     }
 
     /// Sin API nativa para esto — mide bajada/subida bajo demanda contra un
-    /// endpoint público. El mismo botón sirve para repetir la medición.
+    /// endpoint público. El mismo botón sirve para repetir la medición. Sin
+    /// fondo ni borde (como el resto de la fila): un link de color acento
+    /// en la columna de etiqueta, en armonía con el resto del popover.
     private var speedTestRow: some View {
-        HStack(spacing: 8) {
-            Button(L(.speedTestButtonLabel, lang)) {
+        HStack(alignment: .top, spacing: 8) {
+            Button {
                 runSpeedTestIfNeeded()
+            } label: {
+                HStack(spacing: 3) {
+                    Text(L(.speedTestButtonLabel, lang))
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 9.5))
+                }
             }
-            .font(.system(size: 10.5))
-            .controlSize(.mini)
+            .buttonStyle(.link)
+            .font(.system(size: 12))
             .disabled(speedTestState == .running)
+            .frame(width: Self.fieldLabelWidth, alignment: .leading)
 
             speedTestResultText
 
@@ -213,15 +228,15 @@ struct MenuPopoverView: View {
             EmptyView()
         case .running:
             Text(L(.speedTestRunningLabel, lang))
-                .font(.system(size: 11))
+                .font(.system(size: 12))
                 .foregroundColor(.secondary)
         case .done(let down, let up):
             Text(String(format: L(.speedTestResultFormat, lang), down, up))
-                .font(.system(size: 11))
+                .font(.system(size: 12, design: .monospaced))
                 .foregroundColor(.green)
         case .failed:
             Text(L(.speedTestFailedLabel, lang))
-                .font(.system(size: 11))
+                .font(.system(size: 12))
                 .foregroundColor(.secondary)
         }
     }
@@ -313,8 +328,8 @@ struct MenuPopoverView: View {
             Text(fieldLabel(.publicIP, lang))
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
-                .frame(minWidth: 80, alignment: .leading)
-                .fixedSize(horizontal: true, vertical: false)
+                .frame(width: Self.fieldLabelWidth, alignment: .leading)
+                .lineLimit(1)
 
             HStack(spacing: 0) {
                 if let countryText = countryText {
@@ -355,8 +370,8 @@ struct MenuPopoverView: View {
             Text(fieldLabel(.dnsServers, lang))
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
-                .frame(minWidth: 80, alignment: .leading)
-                .fixedSize(horizontal: true, vertical: false)
+                .frame(width: Self.fieldLabelWidth, alignment: .leading)
+                .lineLimit(1)
 
             HStack(spacing: 4) {
                 Text(first)
@@ -400,7 +415,7 @@ struct MenuPopoverView: View {
             Text(fieldLabel(.ram, lang))
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
-                .frame(minWidth: 80, alignment: .leading)
+                .frame(width: Self.fieldLabelWidth, alignment: .leading)
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -429,7 +444,7 @@ struct MenuPopoverView: View {
             Text(fieldLabel(.battery, lang))
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
-                .frame(width: 80, alignment: .leading)
+                .frame(width: Self.fieldLabelWidth, alignment: .leading)
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
@@ -487,7 +502,7 @@ struct MenuPopoverView: View {
             Text(vol.name)
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
-                .frame(minWidth: 80, alignment: .leading)
+                .frame(width: Self.fieldLabelWidth, alignment: .leading)
                 .lineLimit(1)
 
             GeometryReader { geo in
@@ -525,8 +540,8 @@ struct MenuPopoverView: View {
             Text(label)
                 .font(.system(size: 12))
                 .foregroundColor(.secondary)
-                .frame(minWidth: 80, alignment: .leading)
-                .fixedSize(horizontal: true, vertical: false)
+                .frame(width: Self.fieldLabelWidth, alignment: .leading)
+                .lineLimit(1)
             Text(value)
                 .font(.system(size: 12, design: .monospaced))
                 .foregroundColor(.primary)

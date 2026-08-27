@@ -58,9 +58,6 @@ final class StatusBarController: NSObject, NSMenuDelegate {
         contextMenu.removeAllItems()
 
         contextMenu.addItem(NSMenuItem(title: L(.aboutMenuItem, lang), action: #selector(openAbout), keyEquivalent: ""))
-        let updateItem = NSMenuItem(title: L(.checkForUpdates, lang), action: nil, keyEquivalent: "")
-        updateItem.isEnabled = false
-        contextMenu.addItem(updateItem)
         contextMenu.addItem(.separator())
 
         contextMenu.addItem(toggleItem(L(.showOverlay, lang), isOn: prefs.overlayVisible, action: #selector(toggleOverlay)))

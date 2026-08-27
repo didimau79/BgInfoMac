@@ -21,7 +21,7 @@ enum AppLanguage: String, CaseIterable, Codable {
 }
 
 enum LKey: String {
-    case aboutMenuItem, checkForUpdates, showOverlay, refreshEvery
+    case aboutMenuItem, showOverlay, refreshEvery
     case intervalNever, interval5s, interval30s, interval1m, interval5m
     case refreshNow, preferencesMenuItem, quitMenuItem, helpMenuItem
 
@@ -53,6 +53,7 @@ enum LKey: String {
     case textColorLabel, backgroundColorLabel, backgroundOpacityLabel, fontSizeLabel
 
     case aboutWindowTitle, aboutTagline, versionLabel, developedByLabel, donateButtonLabel
+    case githubLinkTitle
     case donationPromptText, donationPromptDisableHint
 
     case launchAtLogin
@@ -83,7 +84,6 @@ enum LKey: String {
 private let translations: [AppLanguage: [LKey: String]] = [
     .en: [
         .aboutMenuItem: "About BGInfoMac",
-        .checkForUpdates: "Check for Updates…",
         .showOverlay: "Show Desktop Overlay",
         .refreshEvery: "Refresh Every",
         .intervalNever: "Never",
@@ -164,6 +164,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .aboutTagline: "A BGInfo alternative for macOS.",
         .developedByLabel: "Developed by AMS",
         .donateButtonLabel: "Donate via PayPal",
+        .githubLinkTitle: "Go to the project on GitHub",
         .donationPromptText: "Enjoying BGInfoMac? Consider donating.",
         .donationPromptDisableHint: "⌘⇧D to stop asking",
         .versionLabel: "Version",
@@ -193,7 +194,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "To show the Wi-Fi network name, BGInfoMac needs Location permission. Enable it in System Settings → Privacy & Security → Location Services.",
         .openSystemSettingsButton: "Open System Settings",
         .noNetworkConnection: "Not connected to any network",
-        .speedTestButtonLabel: "Test speed",
+        .speedTestButtonLabel: "Speedtest",
         .speedTestRunningLabel: "Measuring…",
         .speedTestFailedLabel: "Couldn't measure",
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
@@ -203,7 +204,6 @@ private let translations: [AppLanguage: [LKey: String]] = [
     ],
     .es: [
         .aboutMenuItem: "Acerca de BGInfoMac",
-        .checkForUpdates: "Buscar actualización…",
         .showOverlay: "Mostrar overlay de escritorio",
         .refreshEvery: "Actualizar cada",
         .intervalNever: "Nunca",
@@ -284,6 +284,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .aboutTagline: "Una alternativa a BGInfo para macOS.",
         .developedByLabel: "Desarrollado por AMS",
         .donateButtonLabel: "Donar con PayPal",
+        .githubLinkTitle: "Accede al proyecto en GitHub",
         .donationPromptText: "¿Te gusta BGInfoMac? Considerá donar.",
         .donationPromptDisableHint: "⌘⇧D para no volver a preguntar",
         .versionLabel: "Versión",
@@ -313,7 +314,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Para mostrar el nombre de la red Wi-Fi, BGInfoMac necesita permiso de Localización. Activalo en Ajustes del Sistema → Privacidad y Seguridad → Localización.",
         .openSystemSettingsButton: "Abrir Ajustes del Sistema",
         .noNetworkConnection: "Sin conexión a la red",
-        .speedTestButtonLabel: "Probar velocidad",
+        .speedTestButtonLabel: "Speedtest",
         .speedTestRunningLabel: "Midiendo…",
         .speedTestFailedLabel: "No se pudo medir",
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
@@ -323,7 +324,6 @@ private let translations: [AppLanguage: [LKey: String]] = [
     ],
     .it: [
         .aboutMenuItem: "Informazioni su BGInfoMac",
-        .checkForUpdates: "Controlla aggiornamenti…",
         .showOverlay: "Mostra overlay desktop",
         .refreshEvery: "Aggiorna ogni",
         .intervalNever: "Mai",
@@ -404,6 +404,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .aboutTagline: "Un'alternativa a BGInfo per macOS.",
         .developedByLabel: "Sviluppato da AMS",
         .donateButtonLabel: "Dona con PayPal",
+        .githubLinkTitle: "Vai al progetto su GitHub",
         .donationPromptText: "Ti piace BGInfoMac? Considera di donare.",
         .donationPromptDisableHint: "⌘⇧D per non chiedere più",
         .versionLabel: "Versione",
@@ -433,7 +434,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Per mostrare il nome della rete Wi-Fi, BGInfoMac ha bisogno del permesso di Localizzazione. Attivalo in Impostazioni di Sistema → Privacy e Sicurezza → Localizzazione.",
         .openSystemSettingsButton: "Apri Impostazioni di Sistema",
         .noNetworkConnection: "Nessuna connessione di rete",
-        .speedTestButtonLabel: "Prova velocità",
+        .speedTestButtonLabel: "Speedtest",
         .speedTestRunningLabel: "Misurazione…",
         .speedTestFailedLabel: "Misurazione non riuscita",
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
@@ -443,7 +444,6 @@ private let translations: [AppLanguage: [LKey: String]] = [
     ],
     .de: [
         .aboutMenuItem: "Über BGInfoMac",
-        .checkForUpdates: "Nach Updates suchen…",
         .showOverlay: "Desktop-Overlay anzeigen",
         .refreshEvery: "Aktualisieren alle",
         .intervalNever: "Nie",
@@ -524,6 +524,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .aboutTagline: "Eine BGInfo-Alternative für macOS.",
         .developedByLabel: "Entwickelt von AMS",
         .donateButtonLabel: "Über PayPal spenden",
+        .githubLinkTitle: "Zum Projekt auf GitHub",
         .donationPromptText: "Gefällt dir BGInfoMac? Erwäge eine Spende.",
         .donationPromptDisableHint: "⌘⇧D, um dies nicht mehr zu fragen",
         .versionLabel: "Version",
@@ -553,7 +554,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Um den Namen des Wi-Fi-Netzwerks anzuzeigen, benötigt BGInfoMac die Berechtigung für den Standort. Aktiviere sie in den Systemeinstellungen → Datenschutz & Sicherheit → Ortungsdienste.",
         .openSystemSettingsButton: "Systemeinstellungen öffnen",
         .noNetworkConnection: "Keine Netzwerkverbindung",
-        .speedTestButtonLabel: "Geschwindigkeit testen",
+        .speedTestButtonLabel: "Speedtest",
         .speedTestRunningLabel: "Wird gemessen…",
         .speedTestFailedLabel: "Messung fehlgeschlagen",
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
@@ -563,7 +564,6 @@ private let translations: [AppLanguage: [LKey: String]] = [
     ],
     .fr: [
         .aboutMenuItem: "À propos de BGInfoMac",
-        .checkForUpdates: "Rechercher des mises à jour…",
         .showOverlay: "Afficher l'incrustation bureau",
         .refreshEvery: "Actualiser toutes les",
         .intervalNever: "Jamais",
@@ -644,6 +644,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .aboutTagline: "Une alternative à BGInfo pour macOS.",
         .developedByLabel: "Développé par AMS",
         .donateButtonLabel: "Faire un don via PayPal",
+        .githubLinkTitle: "Accéder au projet sur GitHub",
         .donationPromptText: "Vous aimez BGInfoMac ? Pensez à faire un don.",
         .donationPromptDisableHint: "⌘⇧D pour ne plus demander",
         .versionLabel: "Version",
@@ -673,7 +674,7 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .wifiPermissionPrefsMessage: "Pour afficher le nom du réseau Wi-Fi, BGInfoMac a besoin de l'autorisation de localisation. Activez-la dans Réglages Système → Confidentialité et sécurité → Service de localisation.",
         .openSystemSettingsButton: "Ouvrir Réglages Système",
         .noNetworkConnection: "Aucune connexion réseau",
-        .speedTestButtonLabel: "Tester la vitesse",
+        .speedTestButtonLabel: "Speedtest",
         .speedTestRunningLabel: "Mesure en cours…",
         .speedTestFailedLabel: "Échec de la mesure",
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
