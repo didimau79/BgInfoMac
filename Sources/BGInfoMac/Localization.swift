@@ -79,6 +79,7 @@ enum LKey: String {
 
     /// Formato con dos "%@": espacio usado y espacio libre.
     case storageUsedFreeTooltip
+    case volumeKindNetworkSuffix, volumeKindExternalSuffix
 }
 
 private let translations: [AppLanguage: [LKey: String]] = [
@@ -200,6 +201,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ used / %@ free",
+        .volumeKindNetworkSuffix: "network",
+        .volumeKindExternalSuffix: "external",
         .dnsMoreSuffix: "+%d more"
     ],
     .es: [
@@ -320,6 +323,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ usados / %@ libres",
+        .volumeKindNetworkSuffix: "red",
+        .volumeKindExternalSuffix: "externo",
         .dnsMoreSuffix: "+%d más"
     ],
     .it: [
@@ -440,6 +445,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ utilizzati / %@ liberi",
+        .volumeKindNetworkSuffix: "rete",
+        .volumeKindExternalSuffix: "esterno",
         .dnsMoreSuffix: "+%d altri"
     ],
     .de: [
@@ -560,6 +567,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ belegt / %@ frei",
+        .volumeKindNetworkSuffix: "Netzwerk",
+        .volumeKindExternalSuffix: "extern",
         .dnsMoreSuffix: "+%d weitere"
     ],
     .fr: [
@@ -680,6 +689,8 @@ private let translations: [AppLanguage: [LKey: String]] = [
         .speedTestResultFormat: "%.0f↓ / %.0f↑ Mbps",
 
         .storageUsedFreeTooltip: "%@ utilisés / %@ libres",
+        .volumeKindNetworkSuffix: "réseau",
+        .volumeKindExternalSuffix: "externe",
         .dnsMoreSuffix: "+%d autres"
     ]
 ]

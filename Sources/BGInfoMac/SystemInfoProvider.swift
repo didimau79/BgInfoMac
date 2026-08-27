@@ -10,6 +10,14 @@ enum VolumeKind {
     case internalDisk
     case external
     case network
+
+    var sortPriority: Int {
+        switch self {
+        case .internalDisk: return 0
+        case .external: return 1
+        case .network: return 2
+        }
+    }
 }
 
 struct VolumeInfo: Identifiable {
@@ -332,7 +340,14 @@ final class SystemInfoProvider {
 
             result.append(VolumeInfo(name: name, totalBytes: total, availableBytes: available, usedBytes: used, kind: kind, formatDescription: values.volumeLocalizedFormatDescription))
         }
-        return result.sorted { $0.totalBytes > $1.totalBytes }
+        // El disco interno primero siempre, después el resto (externos y de
+        // red) — dentro de cada grupo, el más grande primero.
+        return result.sorted { lhs, rhs in
+            if lhs.kind != rhs.kind {
+                return lhs.kind.sortPriority < rhs.kind.sortPriority
+            }
+            return lhs.totalBytes > rhs.totalBytes
+        }
     }
 
     func captureNetwork() -> (interfaces: [NetworkInterfaceInfo], ssid: String?) {

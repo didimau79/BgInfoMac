@@ -497,13 +497,30 @@ struct MenuPopoverView: View {
         return "\(usedFree) — \(format)"
     }
 
+    private func volumeKindSuffix(_ kind: VolumeKind) -> String? {
+        switch kind {
+        case .internalDisk: return nil
+        case .external: return L(.volumeKindExternalSuffix, lang)
+        case .network: return L(.volumeKindNetworkSuffix, lang)
+        }
+    }
+
     private func storageBar(_ vol: VolumeInfo) -> some View {
         HStack(spacing: 8) {
-            Text(vol.name)
-                .font(.system(size: 12))
-                .foregroundColor(.secondary)
-                .frame(width: Self.fieldLabelWidth, alignment: .leading)
-                .lineLimit(1)
+            HStack(alignment: .firstTextBaseline, spacing: 4) {
+                Text(vol.name)
+                    .font(.system(size: 12))
+                    .foregroundColor(.secondary)
+                    .lineLimit(1)
+
+                if let suffix = volumeKindSuffix(vol.kind) {
+                    Text(suffix)
+                        .font(.system(size: 10))
+                        .foregroundColor(.secondary.opacity(0.7))
+                        .lineLimit(1)
+                }
+            }
+            .frame(width: Self.fieldLabelWidth, alignment: .leading)
 
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
