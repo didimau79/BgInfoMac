@@ -307,8 +307,17 @@ final class SystemInfoProvider {
             // como recuperable). `df` en Terminal usa otra cuenta distinta
             // para "Used" (específica del volumen de Sistema en Catalina+,
             // no representa el uso real del disco), por eso no la seguimos.
-            let available = values.volumeAvailableCapacityForImportantUsage
-                ?? Int64(values.volumeAvailableCapacity ?? 0)
+            // Muchos servidores SMB no soportan esta métrica y devuelven 0
+            // en vez de omitirla, lo que mostraba la barra siempre roja al
+            // 100%: si da 0, se usa la capacidad disponible "simple" en su
+            // lugar, casi siempre bien soportada incluso en red.
+            let importantUsage = values.volumeAvailableCapacityForImportantUsage
+            let available: Int64
+            if let importantUsage, importantUsage > 0 {
+                available = importantUsage
+            } else {
+                available = Int64(values.volumeAvailableCapacity ?? 0)
+            }
             guard total > 0 else { continue }
             let used = max(0, total - available)
 
